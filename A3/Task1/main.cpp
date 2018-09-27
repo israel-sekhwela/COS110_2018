@@ -2,6 +2,9 @@
 #include <string>
 
 #include "Vigenere.h"
+//#include "OneTimePad.h"
+//#include "SwapScramble.h"
+//#include "Columnar.h"
 
 using namespace std;
 /*
@@ -13,12 +16,12 @@ using namespace std;
  */
 
 void testCipher(Cipher& cipher, const string& text) {
-	try {
-  	string encoded = cipher.encode(text); 
-	  cout << encoded << endl;
-  	cout << cipher.decode(encoded) << endl << endl;
+  try {
+    string encoded = cipher.encode(text); 
+    cout << encoded << endl;
+    cout << cipher.decode(encoded) << endl << endl;
   } catch(Exception e) {
-  	cout << e.getError() << endl << endl;
+    cout << e.getError() << endl << endl;
   }
 }
 
@@ -34,35 +37,106 @@ int main() {
   Vigenere vig("BANANA");
   testCipher(vig, shortText);
   testCipher(vig, longText);
-	try {
-  	vig.setCodeword("?");
+  try {
+    vig.setCodeword("?");
   } catch(Exception e) {
-  	cout << e.getError() << endl << endl;
+    cout << e.getError() << endl << endl;
   }
   
-	try {
-  	vig.setCodeword("   ");
+  try {
+    vig.setCodeword("   ");
   } catch(Exception e) {
-  	cout << e.getError() << endl << endl;
+    cout << e.getError() << endl << endl;
   }
   
-	try {
-	  vig.setCodeword("lemon");
-	} catch(Exception e) {
-  	cout << e.getError() << endl << endl;
+  try {
+    vig.setCodeword("lemon");
+  } catch(Exception e) {
+    cout << e.getError() << endl << endl;
   }
 
   testCipher(vig, shortText);
   testCipher(vig, longText);
   
-	try {
-	  vig.setCodeword("this-is-not-a-code-you're-looking-for");
+  try {
+    vig.setCodeword("this-is-not-a-code-you're-looking-for");
   } catch(Exception e) {
-  	cout << e.getError() << endl << endl;
+    cout << e.getError() << endl << endl;
   }
 
   testCipher(vig, shortText);
   testCipher(vig, longText);
+
+  /************** Task 2 ***************/
+
+  // cout << "************** Task 2 ***************" << endl;
+  // OneTimePad pad(1);  
+  // testCipher(pad, shortText);
+  // testCipher(pad, longText);
+  
+  // try {
+  //  pad.setSeed(-1);
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // }
+  // try {  
+   //  pad.setSeed(2);
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // }
+  // testCipher(pad, shortText);
+  // testCipher(pad, longText);
+
+  // try {  
+   //  pad.setSeed(9999);
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // }
+  // testCipher(pad, shortText);
+  // testCipher(pad, longText);
+
+  // /************** Task 3 ***************/
+
+  // cout << "************** Task 3 ***************" << endl;
+  // SwapScramble ss;
+  // testCipher(ss, "program");  
+  // testCipher(ss, "world");  
+  // testCipher(ss, "secret");   
+  // testCipher(ss, "sad world");   
+  // testCipher(ss, "   a   ");  
+  // testCipher(ss, shortText);
+  // testCipher(ss, longText);
+
+  // /************** Task 4 ***************/
+
+  // cout << "************** Task 4 ***************" << endl;
+  // Columnar cc("key");   
+  // testCipher(cc, "   a   ");  
+  // testCipher(cc, shortText);
+  // testCipher(cc, longText);   
+  // try {
+  //  cc.setCodeword("bAAA");
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // }   
+  // try {
+  //  cc.setCodeword("x");
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // }   
+  // try {
+  //  cc.setCodeword("BANANA");
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // }   
+  // testCipher(cc, shortText);
+  // testCipher(cc, longText);   
+  
+  // try {
+  //  cout << cc.decode(longText) << endl << endl;
+  // } catch(Exception e) {
+  //  cout << e.getError() << endl << endl;
+  // } 
   
   return 0;
 }

@@ -1,69 +1,112 @@
 #include "Vigenere.h"
 
- Vigenere(const string &s){
-    this->codeword = s;
+//Global varable to access enocde amd decode index
+int decode_index = 0;
+int encode_index = 0;
 
-    for (int i = 0; i < codeword.size(); ++i){
-        if (codeword[i] >= 'A' && codeword[i] <= 'Z'){
-            this->codeword += codeword[i];
-        }
-        else 
-        if (key[i] >= 'a' && codeword[i] <= 'z'){
-            this->codeword += codeword[i] + 'A' - 'a';
-        }
+Vigenere :: Vigenere(const string& s){
+    //this->codeword = s;
+    this->setCodeword(s);
+}
+
+void Vigenere :: setCodeword(const string& s){
+    int count;
+    int white_space;
+
+    count = 0;
+    while(count < 95){
+        ascii = ascii + char(count + 32);
+        count = count + 1; 
     }
- }
-void    Vigenere :: setCodeWord(const string &s){
-    try{
-        if(s <= 0){
-            throw("Please provide a positive shift value");
+        
+    count = 0;
+    white_space = 0;
+    while(s[count] != '\0'){
+        if(s[count]==' '){
+            white_space++;
         }
-        else
-        if(s > 94){
-            throw("Maximum shift is 94 for ASCII, please try again");
+        count = count + 1;
+    }
+
+    if(count > 1 && white_space != count){
+            this->codeword = s;
+    }
+    else{
+        Exception str("The codeword provided is not going to generate a safe encryption");
+        throw (str);
+    }
+}
+
+string Vigenere :: encode(const string& s){
+    return (SubstitutionCipher::encode(s));
+}
+
+string Vigenere::decode(const string& s){
+    return (SubstitutionCipher::decode(s));
+}
+
+char Vigenere::encodeChar(char c){
+    int count;
+    int ascii_diff;
+    int size;
+
+    count = 0;
+    while(ascii[count] != codeword[encode_index]){
+        count = count + 1;
+    }
+
+    ascii_diff = int(c) - 32;
+    size = 0;
+    while(size < count){
+        if((ascii_diff + 1) > 94){
+            ascii_diff = 0;
         }
         else{
-            this->codeword = s;
+            ascii_diff = ascii_diff + 1;
         }
-    }catch(string msg){
-        cout << msg << endl;
-        // int i;
-        // cin >> i;
-        // this->setShift(i);
+        size = size + 1;
     }
+
+    if(codeword[encode_index+1]){
+        encode_index++;
+    }
+    else{
+        encode_index = 0;
+    }
+    decode_index = 0;
+
+    return (ascii[ascii_diff]);
 }
 
-string Vigenere :: encode(string s){
-    string out;
+char Vigenere :: decodeChar(char c){
+    int count;
+    int ascii_diff;
+    int size;
 
-    for (int i = 0, j = 0; i < s.length(); ++i){
-        char c = s[i];
-        if (c >= 'a' && c <= 'z'){
-            c += 'A' - 'a';
-        }
-        else
-        if (c < 'A' || c > 'Z'){
-            continue;
-        }
-        out += (c + codeword[j] - 2 * 'A') % 26 + 'A';
-        j = (j + 1) % codeword.length();
+    count = 0;
+    while(ascii[count] != codeword[decode_index]){
+        count++;
     }
-    return out;
-}
-string Vigenere :: decode(string s){
-    string out;
+    
+    ascii_diff = int(c) - 32;
+    size = 0;
+    while(size < count){
+        if((ascii_diff - 1) < 0){
+            ascii_diff = 94;
+        }
+        else{
+            ascii_diff = ascii_diff - 1;
+        }
+        size = size + 1;
+    }
+    
+    if(codeword[decode_index + 1]){
+        decode_index = decode_index + 1;
+    }
+    else{
+        decode_index = 0;
+    }
+    encode_index = 0;
 
-    for (int i = 0, j = 0; i < s.length(); ++i){
-        char c = s[i];
-        if (c >= 'a' && c <= 'z'){
-            c += 'A' - 'a';
-        }
-        else 
-        if (c < 'A' || c > 'Z'){
-            continue;
-        }
-        out += (c - codeword[j] + 26) % 26 + 'A';
-        j = (j + 1) % codeword.length();
-    }
-    return (out);
+    return (ascii[ascii_diff]);
 }

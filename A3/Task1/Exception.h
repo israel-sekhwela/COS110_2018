@@ -1,9 +1,24 @@
-#include "Cipher.h"
+#ifndef exception_h
+#define exception_h
+
+#include <string>
+using namespace std;
 
 class Exception{
     protected:
-        std::string error;
+        string error;
     public:
-        Exception(const std::string &);
-        std::string getError();
+	Exception(const string &s){
+		error = s;
+	}
+	
+	string getError(){
+		return (error);
+	}
+
+	void	throwException(Exception e){
+		throw e;
+	}
 };
+
+#endif
